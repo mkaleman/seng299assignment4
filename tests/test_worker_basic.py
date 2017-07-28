@@ -60,6 +60,28 @@ class TestWorkerBasic(unittest.TestCase):
 
         # self.assertEqual(len_to_crawl_after, len_to_crawl_before)
 
+    def test_worker_adding_duplicate_links(self):
+        worker3 = BasicUserParseWorker("https://www.reddit.com/user/Chrikelnel")
+
+        links = ["test.com", "test.com", "test.com"]
+        len_before = len(worker3.to_crawl)
+        worker3.add_links(links)
+        len_after = len(worker3.to_crawl)
+        self.assertEqual(len_before + 1, len_after)
+
+
+
+    def test_worker_add_links_normal_case(self):
+        worker = BasicUserParseWorker("https://www.reddit.com/user/Chrikelnel")
+
+        worker.max_links = 10
+        len_to_crawl_before = len(worker.to_crawl)
+        link_list = ["testAcom", "testB.com", "testC.com"]
+        worker.add_links(link_list)
+        len_to_crawl_after = len(worker.to_crawl)
+
+        self.assertEqual(len_to_crawl_before + 3, len_to_crawl_after)
+
 
 
 
