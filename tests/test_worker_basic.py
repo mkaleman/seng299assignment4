@@ -1,3 +1,4 @@
+
 import unittest
 import codecs
 import os
@@ -6,6 +7,7 @@ from workers.basic_worker import BasicUserParseWorker
 
 
 class TestWorkerBasic(unittest.TestCase):
+
     def test_basic_worker_connection(self):
         """
         Purpose: Test regular running of worker
@@ -34,8 +36,8 @@ class TestWorkerBasic(unittest.TestCase):
 
         results, next_page = worker.parse_text(str(text).strip().replace('\r\n', ''))
 
-        self.assertGreater(len(results), 0)  # Check that results are returned
-        self.assertEqual(len(results[0]), 3)  # Check that results are in triplets (check formatting)
+        self.assertGreater(len(results), 0)     # Check that results are returned
+        self.assertEqual(len(results[0]), 3)    # Check that results are in triplets (check formatting)
 
     def test_worker_add_links_max_limit(self):
         worker = None
@@ -48,7 +50,7 @@ class TestWorkerBasic(unittest.TestCase):
 
         self.assertEqual(len_to_crawl_after, len_to_crawl_before)
 
-        # def test_worker_add_links_in_crawled(self):
+    # def test_worker_add_links_in_crawled(self):
         # worker = BasicUserParseWorker("https://www.reddit.com/user/Chrikelnel")
         # worker.crawled = []
 
@@ -67,6 +69,8 @@ class TestWorkerBasic(unittest.TestCase):
         len_after = len(worker3.to_crawl)
         self.assertEqual(len_before + 1, len_after)
 
+
+
     def test_worker_add_links_normal_case(self):
         worker = BasicUserParseWorker("https://www.reddit.com/user/Chrikelnel")
 
@@ -78,24 +82,16 @@ class TestWorkerBasic(unittest.TestCase):
 
         self.assertEqual(len_to_crawl_before + 3, len_to_crawl_after)
 
-    def t1est_worker_add_links_normal_case(self):
-        worker = BasicUserParseWorker("https://www.reddit.com/user/Chrikelnel")
+    def test_worker_add_links(self):
 
-        worker.max_links = 10
-        len_to_crawl_before = len(worker.to_crawl)
-        link_list = ["testAcom", "testB.com", "testC.com"]
-        worker.add_links(link_list)
-        len_to_crawl_after = len(worker.to_crawl)
+        worker4 = BasicUserParseWorker("https://www.reddit.com/user/Chrikelnel")
 
-        self.assertEqual(len_to_crawl_before + 3, len_to_crawl_after)
+        len_before = len(worker4.to_crawl)
+        worker4.add_links(["https://www.reddit.com/user/Chrikelnel"])
+        len_after = len(worker4.to_crawl)
 
-    def t2est_worker_add_links_normal_case(self):
-        worker = BasicUserParseWorker("https://www.reddit.com/user/Chrikelnel")
+        self.assertEqual(len_after, len_before)
 
-        worker.max_links = 10
-        len_to_crawl_before = len(worker.to_crawl)
-        link_list = ["testAcom", "testB.com", "testC.com"]
-        worker.add_links(link_list)
-        len_to_crawl_after = len(worker.to_crawl)
 
-        self.assertEqual(len_to_crawl_before + 3, len_to_crawl_after)
+
+
